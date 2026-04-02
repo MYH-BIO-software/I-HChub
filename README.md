@@ -1,7 +1,7 @@
-# ISAE: Identify super accessibility elements  
+# I-HChub: Identify Hyper Chromatin Hubs  
 
 ## 1.Introduction  
-The software was used to identify super accessibility elements (SAEs) using ATAC-seq data, which were open chromatin regions in promoters or enhancers that are strongly bound simultaneously by multiple lineage-specific TFs. In addition to this, the software can also associate SAEs with gene expression and identify differential SAEs between different tissues/cell stages and types considering the change both in ATAC signal and TF footprint binding.   
+The software was used to identify Hyper Chromatin Hubs (HChubs) using ATAC-seq data, which were open chromatin regions in promoters or enhancers that are strongly bound simultaneously by multiple lineage-specific TFs. In addition to this, the software can also associate HChubs with gene expression and identify differential HChubs between different tissues/cell stages and types considering the change both in ATAC signal and TF footprint binding.   
 
 ## 2.Dependencies  
 python3  
@@ -18,15 +18,15 @@ bigWigToBedGraph
 Most of these dependencies can be installed at once using conda: http://conda.pydata.org/miniconda.html  
 ## 3.Installation  
 ```
-git clone https://github.com/MingyangHu/ISAE.git
-export PATH=$PATH:/path/to/SAE/bin
+git clone https://github.com/MingyangHu/I-HChub.git
+export PATH=$PATH:/path/to/I-HChub/bin
 ```
 
 ## 4.Usage  
-### 1>Idnetify_SAE.py  
-The script was used to call ATAC broad peak, identify footprints in ATAC peak and super accessibility elements.    
+### 1>Idnetify_HChub.py  
+The script was used to call ATAC broad peak, identify footprints in ATAC peak and Hyper Chromatin Hubs.    
 ```
-Idnetify_SAE.py [options] -t Input_align_file_for_call_peak -b Bam_file -n Experiment_name  -o Output_directory  -g Effective_genome_size --g_file the_chrom_size_file  
+Idnetify_HChub.py [options] -t Input_align_file_for_call_peak -b Bam_file -n Experiment_name  -o Output_directory  -g Effective_genome_size --g_file the_chrom_size_file  
 ```
 * Explanation of parameters    
 -n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Experiment name, which will be used to generate output file names.    
@@ -44,7 +44,7 @@ Idnetify_SAE.py [options] -t Input_align_file_for_call_peak -b Bam_file -n Exper
 -b&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bam file of ATAC-seq data.   
 -A&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ATAC-seq mode (default: True).      
 --wellington_footprints&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Whether to execute footprint analysis,can choose "on" or "off".Default:on  
-###############Identify SAE  
+###############Identify HChub  
 --proximal&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp;  &nbsp; Whether to identify proximal(TSS)-SAE, can choose "on" or "off". Default: on  
 --distal&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp;  &nbsp; Whether to identify distal-SAE,can choose "on" or "off". Default: on  
 --c_proximal&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &ensp; The threshold of footrint score and footprint number to identify proximal-(TSS) SAE. {10,15,20}. Default: 10.   
@@ -55,20 +55,20 @@ Idnetify_SAE.py [options] -t Input_align_file_for_call_peak -b Bam_file -n Exper
 * Usage examples  
 I.The following is an example using align file as the input, the analysis process includes peak calling, footprint analysis and SAE identification.  
  ```  
-Idnetify_SAE.py -t C2C12-DM60h-ATAC.nodup.tn5.tagAlign.gz -g mm -n C2C12_DM60h_ATAC -A -p 8 -b C2C12-DM60h-ATAC.nodup.bam --outdir /path/to/C2C12_DM60h  --g_file mm11.chrom.sizes --Pvalue 10 --c_distal 10 --c_proximal 10   --TSS C2C12_DM60h_promoter.bed  --houseKeeping mouse_houseKeeping_gene_TSS_region.bed    
+Idnetify_HChub.py -t C2C12-DM60h-ATAC.nodup.tn5.tagAlign.gz -g mm -n C2C12_DM60h_ATAC -A -p 8 -b C2C12-DM60h-ATAC.nodup.bam --outdir /path/to/C2C12_DM60h  --g_file mm11.chrom.sizes --Pvalue 10 --c_distal 10 --c_proximal 10   --TSS C2C12_DM60h_promoter.bed  --houseKeeping mouse_houseKeeping_gene_TSS_region.bed    
  ```  
 &nbsp; &nbsp; &nbsp; &nbsp; II.The following is an example skipping peak calling. The parameter "-t", "-g", "--Pvalue", which used for peak calling, are replaced by "--Broad_peak".  
  ``` 
-Idnetify_SAE.py --macs2_call_peak off --Broad_peak C2C12_DM60h_ATAC_peaks.broadPeak_pfilter.bed.sort.bed -n C2C12_DM60h_ATAC -A -p 8 -b C2C12-DM60h-ATAC.nodup.bam --outdir /path/to/C2C12_DM60h  --g_file mm11.chrom.sizes  --c_distal 10 --c_proximal 10   --TSS C2C12_DM60h_promoter.bed  --houseKeeping mouse_houseKeeping_gene_TSS_region.bed   
+Idnetify_HChub.py --macs2_call_peak off --Broad_peak C2C12_DM60h_ATAC_peaks.broadPeak_pfilter.bed.sort.bed -n C2C12_DM60h_ATAC -A -p 8 -b C2C12-DM60h-ATAC.nodup.bam --outdir /path/to/C2C12_DM60h  --g_file mm11.chrom.sizes  --c_distal 10 --c_proximal 10   --TSS C2C12_DM60h_promoter.bed  --houseKeeping mouse_houseKeeping_gene_TSS_region.bed   
  ``` 
  &nbsp; &nbsp; &nbsp; &nbsp; III. The following is an example skipping peak calling and footprint analysis. The parameters "-t", "-g", "--Pvalue", which used for peak calling, are replaced by "--Broad_peak". The parameters "-b", "-A" ,"-p" which used for footprint analysis, are replaced by "--footprint_file". 
  ```
- Idnetify_SAE.py --macs2_call_peak off --wellington_footprints off --Broad_peak C2C12_DM60h_ATAC_peaks.broadPeak_pfilter.bed.sort.bed --Footprint_file C2C12_DM60h_ATAC.WellingtonFootprints.score.bed -n C2C12_DM60h_ATAC --outdir /path/to/C2C12_DM60h  --g_file mm11.chrom.sizes  --c_distal 10 --c_proximal 10   --TSS C2C12_DM60h_promoter.bed  --houseKeeping mouse_houseKeeping_gene_TSS_region.bed
+ Idnetify_HChub.py --macs2_call_peak off --wellington_footprints off --Broad_peak C2C12_DM60h_ATAC_peaks.broadPeak_pfilter.bed.sort.bed --Footprint_file C2C12_DM60h_ATAC.WellingtonFootprints.score.bed -n C2C12_DM60h_ATAC --outdir /path/to/C2C12_DM60h  --g_file mm11.chrom.sizes  --c_distal 10 --c_proximal 10   --TSS C2C12_DM60h_promoter.bed  --houseKeeping mouse_houseKeeping_gene_TSS_region.bed
  ```
 ### 2>link_ATAC_peak_with_gene.py  
-The script was used to assign super and typical accessibility elements to each expressed gene and compare the gene expression between the two group genes.    
+The script was used to assign Hyper and Mild Chromatin Hubs to each expressed gene and compare the gene expression between the two group genes.    
 ```
-link_ATAC_peak_with_gene.py [options] -s SAE_bed_file -t TAE_bed_file -g  Gene_tss_bed_file  -G Gff_annotation_file  -e Gene_expression_file -o  Output_directory
+link_ATAC_peak_with_gene.py [options] -s HChub_bed_file -t MChub_bed_file -g  Gene_tss_bed_file  -G Gff_annotation_file  -e Gene_expression_file -o  Output_directory
 ```
 * Explanation of parameters  
 -s&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Bed file of SAE.  
@@ -82,20 +82,20 @@ link_ATAC_peak_with_gene.py [options] -s SAE_bed_file -t TAE_bed_file -g  Gene_t
 -h&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Print this help menu.  
 * Usage examples  
 ```
- link_ATAC_peak_with_gene.py -s C2C12_DM60h_ATAC_super_ATAC_broad_peak.bed -t C2C12_DM60h_ATAC_typical_ATAC_broad_peak.bed -g C2C12_expressed_gene_ID_TSS_site_position -G gencode.vM11.chr_patch_hapl_scaff.annotation.gff3 -e C2C12_DM60h_RNAseq_cpm_deseq2_average.txt -k houseKeeping_gene_ID  -o /Path/to/link_gene  -m distal
+ link_ATAC_peak_with_gene.py -s C2C12_DM60h_ATAC_HChub_ATAC_broad_peak.bed -t C2C12_DM60h_ATAC_MChub_ATAC_broad_peak.bed -g C2C12_expressed_gene_ID_TSS_site_position -G gencode.vM11.chr_patch_hapl_scaff.annotation.gff3 -e C2C12_DM60h_RNAseq_cpm_deseq2_average.txt -k houseKeeping_gene_ID  -o /Path/to/link_gene  -m distal
 ```
 ### 3>DifferentialSAE.py  
-The script was used to identify differential SAEs between different tissues/cell stages and types considering the change both in ATAC signal and TF footprint binding.     
+The script was used to identify differential HChubs between different tissues/cell stages and types considering the change both in ATAC signal and TF footprint binding.     
 ```
-DifferentialSAE.py  --pt  Treatment_ATAC_broad_peak_bed_file --pc   Control_ATAC_broad_bed_file --bt  Treatment_bam_file  --bc  Control_bam_file  --st  Treatment_SAE_bed_file  --sc  Control_SAE_bed_file --nt Treatment_sample_name --nc Control_sample_name --ft Treatment_footprint_peak_bed_file  --fc Control_footprint_bed_file --fs Footprint_Score_threshold -g Genome -d Diff_analysis_method -o output_path  
+DifferentialHChub.py  --pt  Treatment_ATAC_broad_peak_bed_file --pc   Control_ATAC_broad_bed_file --bt  Treatment_bam_file  --bc  Control_bam_file  --st  Treatment_HChub_bed_file  --sc  Control_HChub_bed_file --nt Treatment_sample_name --nc Control_sample_name --ft Treatment_footprint_peak_bed_file  --fc Control_footprint_bed_file --fs Footprint_Score_threshold -g Genome -d Diff_analysis_method -o output_path  
 ```
 * Explanation of parameters  
 --pt&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   ATAC broad peak bed file of treatment group.    
 --pc&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   ATAC broad peak bed file of control group.    
 --bt&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   ATAC bam file of treatment group.    
 --bc&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   ATAC bam file of control group.    
---st&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   SAE bed file of treatment group.  
---sc&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   TAE bed file of control group.   
+--st&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   HChub bed file of treatment group.  
+--sc&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   MChub bed file of control group.   
 --nt&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   Experiment name of treatment group.      
 --nc&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   Experiment name of control group.    
 --ft&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   Footprint bed file of treatment group.    
