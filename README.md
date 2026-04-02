@@ -45,15 +45,15 @@ Idnetify_HChub.py [options] -t Input_align_file_for_call_peak -b Bam_file -n Exp
 -A&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ATAC-seq mode (default: True).      
 --wellington_footprints&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Whether to execute footprint analysis,can choose "on" or "off".Default:on  
 ###############Identify HChub  
---proximal&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp;  &nbsp; Whether to identify proximal(TSS)-SAE, can choose "on" or "off". Default: on  
---distal&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp;  &nbsp; Whether to identify distal-SAE,can choose "on" or "off". Default: on  
---c_proximal&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &ensp; The threshold of footrint score and footprint number to identify proximal-(TSS) SAE. {10,15,20}. Default: 10.   
---c_distal&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &ensp; The threshold of footrint score and footprint number to identify distal- SAE. {10,15,20}. Default: 10.   
+--proximal&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp;  &nbsp; Whether to identify proximal(TSS)-HChub, can choose "on" or "off". Default: on  
+--distal&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp;  &nbsp; Whether to identify distal-HChub,can choose "on" or "off". Default: on  
+--c_proximal&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &ensp; The threshold of footrint score and footprint number to identify proximal-(TSS) HChub. {10,15,20}. Default: 10.   
+--c_distal&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &ensp; The threshold of footrint score and footprint number to identify distal- HChub. {10,15,20}. Default: 10.   
 --TSS&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &ensp; Bed file of gene promoter or TSS site.  
 --houseKeeping&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bed file of houseKeeping gene promoter or TSS site.  
 -h&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Print this help menu.  
 * Usage examples  
-I.The following is an example using align file as the input, the analysis process includes peak calling, footprint analysis and SAE identification.  
+I.The following is an example using align file as the input, the analysis process includes peak calling, footprint analysis and HChub identification.  
  ```  
 Idnetify_HChub.py -t C2C12-DM60h-ATAC.nodup.tn5.tagAlign.gz -g mm -n C2C12_DM60h_ATAC -A -p 8 -b C2C12-DM60h-ATAC.nodup.bam --outdir /path/to/C2C12_DM60h  --g_file mm11.chrom.sizes --Pvalue 10 --c_distal 10 --c_proximal 10   --TSS C2C12_DM60h_promoter.bed  --houseKeeping mouse_houseKeeping_gene_TSS_region.bed    
  ```  
@@ -71,20 +71,20 @@ The script was used to assign Hyper and Mild Chromatin Hubs to each expressed ge
 link_ATAC_peak_with_gene.py [options] -s HChub_bed_file -t MChub_bed_file -g  Gene_tss_bed_file  -G Gff_annotation_file  -e Gene_expression_file -o  Output_directory
 ```
 * Explanation of parameters  
--s&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Bed file of SAE.  
--t&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Bed file of TAE.  
+-s&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Bed file of HChub.  
+-t&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Bed file of MChub.  
 -g&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &ensp; Bed file of gene TSS site.  
 -G&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &ensp; Gff annotation file of gene.  
 -e&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Gene expression file.  
--k&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  House keeping gene ID (Optional parameter). If provide this file, these housekeeping genes will be removed in the gene list associated with SAE and TAE.  
+-k&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  House keeping gene ID (Optional parameter). If provide this file, these housekeeping genes will be removed in the gene list associated with HChub and MChub.  
 -o&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Path to output directory.   
--m&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; The way to link gene with ATAC peak according to the type of SAE and TAE. Could choose "distal" or "proximal".  
+-m&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; The way to link gene with ATAC peak according to the type of HChub and MChub. Could choose "distal" or "proximal".  
 -h&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Print this help menu.  
 * Usage examples  
 ```
  link_ATAC_peak_with_gene.py -s C2C12_DM60h_ATAC_HChub_ATAC_broad_peak.bed -t C2C12_DM60h_ATAC_MChub_ATAC_broad_peak.bed -g C2C12_expressed_gene_ID_TSS_site_position -G gencode.vM11.chr_patch_hapl_scaff.annotation.gff3 -e C2C12_DM60h_RNAseq_cpm_deseq2_average.txt -k houseKeeping_gene_ID  -o /Path/to/link_gene  -m distal
 ```
-### 3>DifferentialSAE.py  
+### 3>DifferentialHChub.py  
 The script was used to identify differential HChubs between different tissues/cell stages and types considering the change both in ATAC signal and TF footprint binding.     
 ```
 DifferentialHChub.py  --pt  Treatment_ATAC_broad_peak_bed_file --pc   Control_ATAC_broad_bed_file --bt  Treatment_bam_file  --bc  Control_bam_file  --st  Treatment_HChub_bed_file  --sc  Control_HChub_bed_file --nt Treatment_sample_name --nc Control_sample_name --ft Treatment_footprint_peak_bed_file  --fc Control_footprint_bed_file --fs Footprint_Score_threshold -g Genome -d Diff_analysis_method -o output_path  
@@ -100,7 +100,7 @@ DifferentialHChub.py  --pt  Treatment_ATAC_broad_peak_bed_file --pc   Control_AT
 --nc&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   Experiment name of control group.    
 --ft&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   Footprint bed file of treatment group.    
 --fc&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   Footprint bed file of control group.    
---fs&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   Score threshold of footprint of treatment and control group. The footprint with score > set threshold would be used to caclulate footprint number in ATAC broad peak. Recommending minimum footprint score threshold for use in SAE identification of treatment and control group.  
+--fs&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   Score threshold of footprint of treatment and control group. The footprint with score > set threshold would be used to caclulate footprint number in ATAC broad peak. Recommending minimum footprint score threshold for use in HChub identification of treatment and control group.  
 -g&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Available Genomes:[mm10,hg38,oviAri4,susScr11,bosTau9,galGal5],If no genome is available, specify 'none'.    
 -d&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Differential Expression program selection:[DESeq2,DESeq,edgeR,limma], Default:edgeR.    
 -o&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   Path to output directory.  
